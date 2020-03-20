@@ -3,16 +3,20 @@ use std::ops;
 
 #[derive(Debug, Clone, Eq, PartialEq)]
 pub struct Array {
-    array: Vec<u32>,
+    array:   Vec<u32>,
     changes: Vec<usize>,
-    i:     usize,
-    j:     usize,
+    pub i:   isize,
+    pub j:   isize,
 }
 
 impl Array {
     
     pub fn new(width: u32) -> Array {
-        Array { array: (1..width + 1).collect(), i: 0, j: 0, changes: Vec::new() }
+        Array { array: (1..width + 1).collect(), changes: Vec::new(), i: -1, j: -1 }
+    }
+
+    pub fn new_ij(arr: Array, i_: isize, j_: isize) -> Array {
+        Array { array: arr.array, changes: arr.changes, i: i_, j: j_ }
     }
 
     pub fn len(&self) -> usize {
@@ -29,18 +33,16 @@ impl Array {
                 commands.push(RenderCommand::DrawLine(x, height - (self.array[x] as f64 / self.len()as f64 * height as f64).ceil() as usize, x, height, '|'));
             }
         } else {
-            let mut i: u32 = 0;
+            let mut i = 0.0;
             for x in &self.changes {
-                let gb = 255 - (255 * i / self.changes.len() as u32);
+                let gb = match 255.0 * (i / 3.0) { x if x < 255.0 => x as u8, _ => 255 };
                 commands.push(RenderCommand::SetColour(Colour::rgb(255, gb as u8, gb as u8)));
-                commands.push(RenderCommand::DrawLine(*x, height - (self.array[*x] as f64 / self.len()as f64 * height as f64).ceil() as usize, *x, 0, ' '));
+                commands.push(RenderCommand::DrawLine(*x, 0, *x, height - (self.array[*x] as f64 / self.len()as f64 * height as f64).ceil() as usize, ' '));
                 commands.push(RenderCommand::DrawLine(*x, height - (self.array[*x] as f64 / self.len()as f64 * height as f64).ceil() as usize, *x, height, '|'));
-                i += 1;
+                i += 1.0;
             }
 
-            while self.changes.len() > 5 {
-                self.changes.pop();
-            }
+            self.changes.truncate(5);
         }
 
         return commands;
@@ -54,6 +56,10 @@ impl Array {
         c.insert(0, j);
         a.swap(i, j);
         Array { array: a, changes: c, i: self.i, j: self.j }
+    }
+
+    pub fn clear_changes(self) -> Array {
+        Array { array: self.array, changes: Vec::new(), i: self.i, j: self.j }
     }
 
 }

@@ -6,3 +6,4 @@ edition = "2018"
 
 [dependencies]
 console_gfx = { git = "https://github.com/MichaelObvious/console_gfx.git", version = "0.0.3" }
+rand = "0.7.3"

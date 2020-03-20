@@ -1,4 +1,5 @@
 extern crate console_gfx;
+extern crate rand;
 
 mod algorithms;
 mod array;
@@ -7,12 +8,10 @@ use console_gfx::rendering::{ colour::Colour, renderer::{ RenderCommand, Rendere
 use std::{ thread, time };
 
 fn main() {
-    let width = 20;
-    let height = 20;
-    let ups = 2;
+    let width = 80;
+    let height = 40;
+    let ups = 10;
     let step = time::Duration::from_millis(1000 / ups);
-
-    let mut arr = array::Array::new(width as u32);
 
     let mut r = Renderer::new((width, height));
     r.push_cmds(vec![
@@ -22,16 +21,26 @@ fn main() {
         RenderCommand::DrawBorder('#'),
     ]);
 
+    let mut result = (false, array::Array::new(width as u32));
+    let algorithm = algorithms::Algorithm::Shuffle;
+
     let mut last_time = time::Instant::now();
-    loop {
-        r.push_cmds(arr.render(height));
-        arr = arr.swap(1, 2);
+    while !result.0 {
+        result = algorithm.sort(result.1);
+        r.push_cmds(result.1.render(height));
         r.update();
 
         thread::sleep(get_sleep_time(&last_time, &step));
         last_time = time::Instant::now();
     }
 
+    // make the red bars white
+    result.1 = result.1.clear_changes();
+    r.push_cmds(result.1.render(height));
+    r.update();
+
+    // wait to exit to show the result
+    thread::sleep(time::Duration::from_secs(2));
     r.push_cmd(RenderCommand::Reset);
     r.update();
 
