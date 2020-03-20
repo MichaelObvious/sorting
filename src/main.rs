@@ -10,7 +10,7 @@ use std::{ thread, time };
 fn main() {
     let width = 80;
     let height = 40;
-    let ups = 10;
+    let ups = 100;
     let step = time::Duration::from_millis(1000 / ups);
 
     let mut r = Renderer::new((width, height));
@@ -22,7 +22,7 @@ fn main() {
     ]);
 
     let mut arr = (false, array::Array::new(width as u32));
-    let algs = vec![algorithms::Algorithm::Shuffle, algorithms::Algorithm::Shuffle];
+    let algs = vec![algorithms::Algorithm::Shuffle, algorithms::Algorithm::Bubble];
     println!("algs: {}", algs.len());
     
     let mut last_time = time::Instant::now();
