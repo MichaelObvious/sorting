@@ -8,8 +8,8 @@ use console_gfx::rendering::{ colour::Colour, renderer::{ RenderCommand, Rendere
 use std::{ thread, time };
 
 fn main() {
-    let width = 80;
-    let height = 40;
+    let width = 40;
+    let height = 20;
     let ups = 100;
     let step = time::Duration::from_millis(1000 / ups);
 
