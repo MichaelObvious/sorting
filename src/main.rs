@@ -21,22 +21,27 @@ fn main() {
         RenderCommand::DrawBorder('#'),
     ]);
 
-    let mut result = (false, array::Array::new(width as u32));
-    let algorithm = algorithms::Algorithm::Shuffle;
-
+    let mut arr = (false, array::Array::new(width as u32));
+    let algs = vec![algorithms::Algorithm::Shuffle, algorithms::Algorithm::Shuffle];
+    println!("algs: {}", algs.len());
+    
     let mut last_time = time::Instant::now();
-    while !result.0 {
-        result = algorithm.sort(result.1);
-        r.push_cmds(result.1.render(height));
-        r.update();
-
-        thread::sleep(get_sleep_time(&last_time, &step));
-        last_time = time::Instant::now();
+    
+    for algorithm in algs.iter() {
+        while !arr.0 {
+            arr = algorithm.sort(arr.1);
+            r.push_cmds(arr.1.render(height));
+            r.update();
+            
+            thread::sleep(get_sleep_time(&last_time, &step));
+            last_time = time::Instant::now();
+        }
+        arr = (false, arr.1.reset());
     }
 
     // make the red bars white
-    result.1 = result.1.clear_changes();
-    r.push_cmds(result.1.render(height));
+    arr.1 = arr.1.clear_changes();
+    r.push_cmds(arr.1.render(height));
     r.update();
 
     // wait to exit to show the result

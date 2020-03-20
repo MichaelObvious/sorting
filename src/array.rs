@@ -19,6 +19,10 @@ impl Array {
         Array { array: arr.array, changes: arr.changes, i: i_, j: j_ }
     }
 
+    pub fn reset(self) -> Array {
+        Array { array: self.array, changes: Vec::new(), i: -1, j: -1 }
+    }
+
     pub fn len(&self) -> usize {
         self.array.len()
     }
