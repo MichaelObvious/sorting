@@ -22,7 +22,7 @@ fn main() {
     ]);
 
     let mut arr = (false, array::Array::new(width as u32));
-    let algs = vec![algorithms::Algorithm::Shuffle, algorithms::Algorithm::Bubble];
+    let algs = vec![algorithms::Algorithm::Shuffle, algorithms::Algorithm::Insertion];
     println!("algs: {}", algs.len());
     
     let mut last_time = time::Instant::now();
