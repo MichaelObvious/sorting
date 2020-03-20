@@ -9,14 +9,15 @@ use std::{ thread, time };
 fn main() {
     let width = 20;
     let height = 20;
-    let ups = 20;
+    let ups = 2;
     let step = time::Duration::from_millis(1000 / ups);
 
-    let arr = array::Array::new(width as u32);
+    let mut arr = array::Array::new(width as u32);
 
     let mut r = Renderer::new((width, height));
     r.push_cmds(vec![
-        RenderCommand::SetBackground(Colour::rgb(10, 10, 20)),
+        RenderCommand::Clear(Colour::black()),
+        RenderCommand::SetBackground(Colour::black()),
         RenderCommand::SetColour(Colour::white()),
         RenderCommand::DrawBorder('#'),
     ]);
@@ -24,6 +25,7 @@ fn main() {
     let mut last_time = time::Instant::now();
     loop {
         r.push_cmds(arr.render(height));
+        arr = arr.swap(1, 2);
         r.update();
 
         thread::sleep(get_sleep_time(&last_time, &step));
