@@ -25,7 +25,7 @@ impl Array {
             RenderCommand::SetColour(Colour::white()),
         ]);
         for x in 0..self.len() {
-            commands.push(RenderCommand::DrawLine(x, height - 1, x, height - (self.array[x] as f64 / self.len()as f64 * height as f64).ceil() as usize, '|'));
+            commands.push(RenderCommand::DrawLine(x, height - (self.array[x] as f64 / self.len()as f64 * height as f64).ceil() as usize, x, height, '|'));
         }
 
         return commands;
