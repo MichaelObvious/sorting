@@ -3,24 +3,31 @@ use std::ops;
 
 #[derive(Debug, Clone, Eq, PartialEq)]
 pub struct Array {
-    array:   Vec<u32>,
-    changes: Vec<usize>,
-    pub i:   isize,
-    pub j:   isize,
+    array:      Vec<u32>,
+    changes:    Vec<usize>,
+    pub i:      isize,
+    pub j:      isize,
+
+    pub lowest: isize, // selection sort's lowest index
+    pub sorted: bool,  // odd-even sort
 }
 
 impl Array {
     
     pub fn new(width: u32) -> Array {
-        Array { array: (1..width + 1).collect(), changes: Vec::new(), i: -1, j: -1 }
+        Array { array: (1..width + 1).collect(), changes: Vec::new(), i: -1, j: -1, lowest: -1, sorted: false }
     }
 
     pub fn new_ij(arr: Array, i_: isize, j_: isize) -> Array {
-        Array { array: arr.array, changes: arr.changes, i: i_, j: j_ }
+        Array { array: arr.array, changes: arr.changes, i: i_, j: j_, lowest: arr.lowest, sorted: arr.sorted }
+    }
+
+    pub fn set_lowest(self, l: isize) -> Array {
+        Array { array: self.array, changes: self.changes, i: self.i, j: self.j, lowest: l, sorted: self.sorted }
     }
 
     pub fn reset(self) -> Array {
-        Array { array: self.array, changes: Vec::new(), i: -1, j: -1 }
+        Array { array: self.array, changes: Vec::new(), i: -1, j: -1, lowest: -1, sorted: false }
     }
 
     pub fn len(&self) -> usize {
@@ -64,11 +71,17 @@ impl Array {
         c.insert(0, i);
         c.insert(0, j);
         a.swap(i, j);
-        Array { array: a, changes: c, i: self.i, j: self.j }
+        Array { array: a, changes: c, i: self.i, j: self.j, lowest: self.lowest, sorted: self.sorted }
+    }
+
+    pub fn check(self, i: usize) -> Array {
+        let mut s = self;
+        s.changes.insert(0, i);
+        s
     }
 
     pub fn clear_changes(self) -> Array {
-        Array { array: self.array, changes: Vec::new(), i: self.i, j: self.j }
+        Array { array: self.array, changes: Vec::new(), i: self.i, j: self.j, lowest: self.lowest, sorted: self.sorted }
     }
 
 }
