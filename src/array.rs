@@ -18,12 +18,16 @@ impl Array {
         Array { array: (1..width + 1).collect(), changes: Vec::new(), i: -1, j: -1, lowest: -1, sorted: false }
     }
 
-    pub fn new_ij(arr: Array, i_: isize, j_: isize) -> Array {
-        Array { array: arr.array, changes: arr.changes, i: i_, j: j_, lowest: arr.lowest, sorted: arr.sorted }
+    pub fn set_ij(self, i_: isize, j_: isize) -> Array {
+        Array { array: self.array, changes: self.changes, i: i_, j: j_, lowest: self.lowest, sorted: self.sorted }
     }
 
     pub fn set_lowest(self, l: isize) -> Array {
         Array { array: self.array, changes: self.changes, i: self.i, j: self.j, lowest: l, sorted: self.sorted }
+    }
+
+    pub fn set_sorted(self, s: bool) -> Array {
+        Array { array: self.array, changes: self.changes, i: self.i, j: self.j, lowest: self.lowest, sorted: s }
     }
 
     pub fn reset(self) -> Array {
