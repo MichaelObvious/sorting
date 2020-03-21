@@ -8,8 +8,8 @@ checksum = "4785bdd1c96b2a846b2bd7cc02e86b6b3dbf14e7e53446c4f54c92a361040822"
 
 [[package]]
 name = "console_gfx"
-version = "0.0.3"
-source = "git+https://github.com/MichaelObvious/console_gfx.git#a2310e1d5a35f33b3348d4e51fa49ec978fccd82"
+version = "0.0.4"
+source = "git+https://github.com/MichaelObvious/console_gfx.git#2fa9499c41e8aa3e91c275d7e2256e7400f1b897"
 
 [[package]]
 name = "getrandom"
