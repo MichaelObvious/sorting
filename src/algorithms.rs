@@ -30,7 +30,7 @@ impl Algorithm {
                     if i < n as isize && j < n as isize - i - 1
                                             => match (array[j as usize], array[j as usize + 1]) {
                         (a, b) if a > b => (false, array.swap(j as usize, j as usize + 1).set_ij(i, j + 1)),
-                        _               => (false, array.set_ij(i, j + 1)),
+                        _               => (false, array.check(j as usize).set_ij(i, j + 1)),
                     },
                 (n, i, _) if i < n as isize => (false, array.set_ij(i + 1, 0)),
                 _                           => (true, array),
