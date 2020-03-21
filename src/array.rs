@@ -38,15 +38,20 @@ impl Array {
             }
         } else {
             let mut i = 0.0;
-            for x in &self.changes {
-                let gb = match 255.0 * (i / 3.0) { x if x < 255.0 => x as u8, _ => 255 };
-                commands.push(RenderCommand::SetColour(Colour::rgb(255, gb as u8, gb as u8)));
-                commands.push(RenderCommand::DrawLine(*x, 0, *x, height - (self.array[*x] as f64 / self.len()as f64 * height as f64).ceil() as usize, ' '));
-                commands.push(RenderCommand::DrawLine(*x, height - (self.array[*x] as f64 / self.len()as f64 * height as f64).ceil() as usize, *x, height, '|'));
+            for x in self.changes.iter() {
+                if *x < self.len() {
+                    let gb = match 255.0 * (i / 3.0) { x if x < 255.0 => x as u8, _ => 255 };
+                    commands.push(RenderCommand::SetColour(Colour::rgb(255, gb as u8, gb as u8)));
+                    commands.push(RenderCommand::DrawLine(*x, 0, *x, height - (self.array[*x] as f64 / self.len()as f64 * height as f64).ceil() as usize, ' '));
+                    commands.push(RenderCommand::DrawLine(*x, height - (self.array[*x] as f64 / self.len()as f64 * height as f64).ceil() as usize, *x, height, '|'));
+                }
                 i += 1.0;
             }
-
-            self.changes.truncate(5);
+            if self.changes.len() > 5 {
+                self.changes.truncate(5);
+            } else {
+                self.changes.insert(0, self.len());
+            }
         }
 
         return commands;
