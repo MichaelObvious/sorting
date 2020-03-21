@@ -40,16 +40,17 @@ fn main() {
             thread::sleep(get_sleep_time(&last_time, &step));
             last_time = time::Instant::now();
         }
+        // make the red bars white
+        arr.1 = arr.1.clear_changes();
+        r.push_cmds(arr.1.render(height));
+        r.update();
+        
+        // wait to exit to show the result
+        thread::sleep(time::Duration::from_secs(2));
+        //reset array
         arr = (false, arr.1.reset());
     }
 
-    // make the red bars white
-    arr.1 = arr.1.clear_changes();
-    r.push_cmds(arr.1.render(height));
-    r.update();
-
-    // wait to exit to show the result
-    thread::sleep(time::Duration::from_secs(2));
     r.push_cmd(RenderCommand::Reset);
     r.update();
 
